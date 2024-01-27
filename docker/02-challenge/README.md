@@ -1,37 +1,33 @@
-# 01 Challenge - Create image GoLang with less 2MB
+# 01 Challenge - Reverse proxy with Nginx
 
 ## Original challenge text
-> Esse desafio é muito empolgante principalmente se você nunca trabalhou com a linguagem Go! Você terá que publicar uma imagem no docker hub. Quando executarmos: docker run seu-user/fullcycle
+> Nesse desafio você colocará em prática o que aprendemos em relação a utilização do nginx como proxy reverso. A idéia principal é que quando um usuário acesse o nginx, o mesmo fará uma chamada em nossa aplicação node.js. Essa aplicação por sua vez adicionará um registro em nosso banco de dados mysql, cadastrando um nome na tabela people.
 
->Temos que ter o seguinte resultado: Full Cycle Rocks!!
+> O retorno da aplicação node.js para o nginx deverá ser:
 
->Se você perceber, essa imagem apenas realiza um print da mensagem como resultado final, logo, vale a pena dar uma conferida no próprio site da Go Lang para aprender como fazer um "olá mundo".
+>"Full Cycle Rocks!"
 
->Lembrando que a Go Lang possui imagens oficiais prontas, vale a pena consultar o Docker Hub.
+>- Lista de nomes cadastrada no banco de dados.
 
-> A imagem de nosso projeto Go precisa ter menos de 2MB =)
+>Gere o docker-compose de uma forma que basta apenas rodarmos: docker-compose up -d que tudo deverá estar funcionando e disponível na porta: 8080.
 
-> Suba o projeto em um repositório Git remoto e coloque o link da imagem que subiu no Docker Hub.
+>A linguagem de programação para este desafio é Node/JavaScript.
 
 ## Solution
-<ol>
-    <li>Pull a lightweight image using GoLang, using alpine</li>
-    <li>Compile the main.go file</li>
-    <li>Start an empty image with scratch</li>
-    <li>Copy the executable to the new container</li>
-    <li>Execute the file</li>
-</ol>
 
-## Full soluciton
-https://github.com/micaelmf/full-cycle-devops/blob/main/docker/01-challenge/Dockerfile
+This docker-compose.yaml file defines three services: nginx, app, and db.
+
+<ul>
+    <li><code>nginx</code> is a reverse proxy server and It depends on the "app" service and exposes port 8080.</li>
+    <li><code>app</code> is a Node.js application, built from a Dockerfile in the ./node directory. It waits for the db service to start before it begins.</li>
+    <li><code>db</code> is a MySQL database, built from a Dockerfile in the ./mysql directory.</li>
+</ul>
+
+Each service is built from a Dockerfile in its respective directory and they all share a custom network for communication. The Dockerfiles for each service define the necessary setup, dependencies, and exposed ports for that service. The docker-compose.yaml file orchestrates these services to work together.
+
 
 ## Execute soluciton
 <ol>
-<li>Pull docker image</li>
-    <code>docker pull micaelmf/fullcycle-docker-go-2mb:latest</code>
-<li>Run the container</li>
-    <code>docker run micaelmf/fullcycle-docker-go-2mb:latest</code>
+<li>Run the command</li>
+    <code>docker-compose up -d</code>
 </ol>
-
-## Image on Dockerhub
-https://hub.docker.com/r/micaelmf/fullcycle-docker-go-2mb
