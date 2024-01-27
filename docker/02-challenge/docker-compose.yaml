@@ -1,0 +1,38 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - '8080:80'
+    depends_on:
+      - app
+    networks:
+      - internal-network
+
+  app:
+    container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s npm start
+    build:
+      context: ./node
+    depends_on:
+      - db
+    networks:
+      - internal-network
+
+  db:
+    container_name: db
+    build:
+      context: ./mysql
+    command: --innodb-use-native-aio=0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=appdb
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - internal-network
+
+networks:
+  internal-network:
+    driver: bridge
