@@ -23,7 +23,7 @@
 </ol>
 
 ## Full soluciton
-https://github.com/micaelmf/full-cycle-devops/docker/01-challenge/Dockerfile
+https://github.com/micaelmf/full-cycle-devops/blob/main/docker/01-challenge/Dockerfile
 
 ## Execute soluciton
 <ol>
