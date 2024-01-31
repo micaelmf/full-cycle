@@ -13,7 +13,7 @@ services:
 
   app:
     container_name: app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s npm start
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s sh -c "npm install && npm start"
     build:
       context: ./node
     volumes:
